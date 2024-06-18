@@ -4,7 +4,7 @@ require('dotenv').config();
 
 const app = express();
 
-app.use("/api/auth", proxy("http://localhost:8081", {
+app.use("/api/auth", proxy("http://auth-service:8081", {
   proxyReqPathResolver: function (req) {
     return `/auth${req.url}`;
   }

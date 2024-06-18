@@ -1,0 +1,32 @@
+version: '2.27'
+
+services:
+  auth-service:
+    build:
+      context: ./Auth
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    networks:
+      - app-network
+    environment:
+      - NODE_ENV=production
+      - MONGO_URI=mongodb+srv://damiens94160:Jeanmariedu77@cluster0.zuzve06.mongodb.net/micro
+
+  api-gateway:
+    build:
+      context: ./API_Gateway
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - auth-service
+    networks:
+      - app-network
+    environment:
+      - NODE_ENV=production
+      - MONGO_URI=mongodb+srv://damiens94160:Jeanmariedu77@cluster0.zuzve06.mongodb.net/micro
+
+networks:
+  app-network:
+    driver: bridge
