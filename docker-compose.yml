@@ -45,6 +45,7 @@ services:
       - "3000:3000"
     depends_on:
       - auth-service
+      - product-service
     networks:
       - app-network
     develop:
@@ -54,6 +55,8 @@ services:
           action: sync
         - path: ./API_Gateway/package.json
           action: rebuild
+    environment:
+      - JWT_SECRET=123soleil
 
   database:
     image: mongo:latest
@@ -62,6 +65,7 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
+    
     networks:
       - app-network
 

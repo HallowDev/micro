@@ -4,9 +4,9 @@ const productController = require('../controllers/product');
 const auth = require('../middleware/auth');
 
 router.post('/', auth.verifyToken, productController.createProduct);
-router.get('/', auth.verifyToken, productController.getProducts);
-router.get('/:id', auth.verifyToken, productController.getProduct);
-router.put('/:id', auth.verifyToken, productController.updateProduct);
-router.delete('/:id', auth.verifyToken, productController.deleteProduct);
+router.get('/', productController.getProducts);
+router.get('/:id', productController.getProduct);
+router.put('/:id', productController.updateProduct);
+router.delete('/:id', productController.deleteProduct);
 
 module.exports = router;

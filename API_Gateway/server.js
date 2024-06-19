@@ -10,7 +10,7 @@ app.use("/api/auth", proxy("http://auth-service:8081", {
   }
 }));
 
-app.use("/api/products", proxy("http://auth-service:8082", {
+app.use("/api/products", proxy("http://product-service:8082", {
   proxyReqPathResolver: function (req) {
     return `/products${req.url}`;
   }

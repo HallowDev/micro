@@ -4,7 +4,7 @@ const User = require('../models/User');
 require('dotenv').config();
 
 exports.register = async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, role } = req.body;
   console.log(req.body);
 
   try {
@@ -13,7 +13,7 @@ exports.register = async (req, res) => {
       return res.status(400).json({ message: 'User already exists' });
     }
 
-    user = new User({ username, password });
+    user = new User({ username, password, role });
     await user.save();
 
     const payload = { userId: user.id };
