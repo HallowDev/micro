@@ -10,6 +10,12 @@ app.use("/api/auth", proxy("http://auth-service:8081", {
   }
 }));
 
+app.use("/api/products", proxy("http://auth-service:8082", {
+  proxyReqPathResolver: function (req) {
+    return `/products${req.url}`;
+  }
+}));
+
 app.listen(3000, () => {
   console.log('API Gateway en cours d\'exécution sur le port 3000');
 });

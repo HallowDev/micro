@@ -1,17 +1,41 @@
-version: '2.27'
-
 services:
   auth-service:
     build:
       context: ./Auth
       dockerfile: Dockerfile
-    ports:
-      - "8081:8081"
+    develop:
+      watch:
+        - path: ./Auth/
+          target: /usr/src/app/
+          action: sync
+        - path: ./Auth/package.json
+          action: rebuild
     networks:
       - app-network
     environment:
       - NODE_ENV=production
-      - MONGO_URI=mongodb+srv://damiens94160:Jeanmariedu77@cluster0.zuzve06.mongodb.net/micro
+      - PORT=8081
+      - JWT_SECRET=123soleil
+      - MONGO_URI=mongodb://root:example@database:27017/micro?authSource=admin
+      
+  product-service:
+    build:
+      context: ./Product
+      dockerfile: Dockerfile
+    develop:
+      watch:
+        - path: ./Product/
+          target: /usr/src/app/
+          action: sync
+        - path: ./Product/package.json
+          action: rebuild
+    networks:
+      - app-network
+    environment:
+      - NODE_ENV=production
+      - PORT=8082
+      - JWT_SECRET=123soleil
+      - MONGO_URI=mongodb://root:example@database:27017/micro?authSource=admin
 
   api-gateway:
     build:
@@ -23,9 +47,23 @@ services:
       - auth-service
     networks:
       - app-network
+    develop:
+      watch:
+        - path: ./API_Gateway/
+          target: /usr/src/app/
+          action: sync
+        - path: ./API_Gateway/package.json
+          action: rebuild
+
+  database:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
     environment:
-      - NODE_ENV=production
-      - MONGO_URI=mongodb+srv://damiens94160:Jeanmariedu77@cluster0.zuzve06.mongodb.net/micro
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    networks:
+      - app-network
 
 networks:
   app-network:
